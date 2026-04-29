@@ -62,6 +62,35 @@ describe('createInitialState', () => {
 });
 
 // ---------------------------------------------------------------------------
+// createInitialScore / updateScore
+// ---------------------------------------------------------------------------
+
+describe('scoreboard helpers', () => {
+  test('createInitialScore starts both players at zero', () => {
+    expect(createInitialScore()).toEqual({ cat: 0, dog: 0 });
+  });
+
+  test('updateScore increments cat wins only', () => {
+    const score = createInitialScore();
+    const next = updateScore(score, CAT_FACE);
+    expect(next).toEqual({ cat: 1, dog: 0 });
+    expect(score).toEqual({ cat: 0, dog: 0 });
+  });
+
+  test('updateScore increments dog wins only', () => {
+    const score = createInitialScore();
+    const next = updateScore(score, DOG_FACE);
+    expect(next).toEqual({ cat: 0, dog: 1 });
+  });
+
+  test('updateScore ignores draws', () => {
+    const score = createInitialScore();
+    const next = updateScore(score, null);
+    expect(next).toEqual({ cat: 0, dog: 0 });
+  });
+});
+
+// ---------------------------------------------------------------------------
 // getNextPlayer
 // ---------------------------------------------------------------------------
 

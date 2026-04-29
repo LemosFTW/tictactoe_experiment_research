@@ -5,9 +5,12 @@
 
 const cells    = document.querySelectorAll('.cell');
 const status   = document.getElementById('status');
+const catScore = document.getElementById('catScore');
+const dogScore = document.getElementById('dogScore');
 const restartBtn     = document.getElementById('restart');
 
 let state = createInitialState();
+let score = createInitialScore();
 
 function getSymbolClass(symbol) {
   if (symbol === CAT_FACE) return 'cat';
@@ -28,6 +31,11 @@ function setStatus(msg, cls = '') {
   status.className   = 'status' + (cls ? ` ${cls}` : '');
 }
 
+function renderScoreboard() {
+  catScore.textContent = score.cat;
+  dogScore.textContent = score.dog;
+}
+
 function handleClick(e) {
   const idx = Number(e.currentTarget.dataset.index);
   if (state.board[idx] || state.gameOver) return;
@@ -45,6 +53,8 @@ function handleClick(e) {
   if (result) {
     state.gameOver = true;
     if (result.winner) {
+      score = updateScore(score, result.winner);
+      renderScoreboard();
       result.combo.forEach(i => cells[i].classList.add('winning'));
       setStatus(`Player ${result.winner} wins!`, 'win');
     } else {
@@ -70,4 +80,5 @@ restartBtn.addEventListener('click', restartGame);
 
 // Initial render
 render();
+renderScoreboard();
 setStatus(`Player ${state.current}'s turn`);

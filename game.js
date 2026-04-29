@@ -8,6 +8,10 @@ const WINNING_COMBOS = [
 
 const CAT_FACE = '🐱';
 const DOG_FACE = '🐶';
+const SCORE_KEYS = {
+  [CAT_FACE]: 'cat',
+  [DOG_FACE]: 'dog',
+};
 
 /**
  * Returns the initial game state.
@@ -18,6 +22,27 @@ function createInitialState() {
     current: CAT_FACE,
     gameOver: false,
   };
+}
+
+/**
+ * Returns the initial scoreboard state.
+ */
+function createInitialScore() {
+  return { cat: 0, dog: 0 };
+}
+
+/**
+ * Returns a new scoreboard with the winner incremented.
+ * @param {{ cat: number, dog: number }} score
+ * @param {'🐱'|'🐶'|null} winner
+ * @returns {{ cat: number, dog: number }}
+ */
+function updateScore(score, winner) {
+  const next = { ...score };
+  const key = SCORE_KEYS[winner];
+  if (!key) return next;
+  next[key] += 1;
+  return next;
 }
 
 /**
@@ -65,5 +90,15 @@ function checkWinner(board) {
 
 // Allow require() in Node.js (Jest) while remaining a plain script in the browser.
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { WINNING_COMBOS, CAT_FACE, DOG_FACE, createInitialState, getNextPlayer, applyMove, checkWinner };
+  module.exports = {
+    WINNING_COMBOS,
+    CAT_FACE,
+    DOG_FACE,
+    createInitialState,
+    createInitialScore,
+    updateScore,
+    getNextPlayer,
+    applyMove,
+    checkWinner,
+  };
 }
