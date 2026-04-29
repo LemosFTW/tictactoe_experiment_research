@@ -9,10 +9,16 @@ const restartBtn     = document.getElementById('restart');
 
 let state = createInitialState();
 
+function getSymbolClass(symbol) {
+  if (symbol === CAT_FACE) return 'cat';
+  if (symbol === DOG_FACE) return 'dog';
+  return '';
+}
+
 function render() {
   cells.forEach((cell, i) => {
     cell.textContent = state.board[i];
-    cell.className   = 'cell' + (state.board[i] ? ` ${state.board[i].toLowerCase()}` : '');
+    cell.className   = 'cell' + (state.board[i] ? ` ${getSymbolClass(state.board[i])}` : '');
     cell.disabled    = state.board[i] !== '' || state.gameOver;
   });
 }
